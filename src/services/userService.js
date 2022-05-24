@@ -162,6 +162,7 @@ let updateUser = (data) => {
                 }
 
 
+
                 await user.save();
                 resolve({
                     errCode: 0,
