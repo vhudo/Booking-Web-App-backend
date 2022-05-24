@@ -61,19 +61,38 @@ let saveInfoDoctor = (inputData) => {
       if (
         !inputData.doctorId ||
         !inputData.contentHTML ||
-        !inputData.contentMarkdown
+        !inputData.contentMarkdown ||
+        !inputData.action
       ) {
         resolve({
           errCode: 1,
           errMessage: "Missing parameters",
         });
       } else {
-        await db.Markdown.create({
-          contentHTML: inputData.contentHTML,
-          contentMarkdown: inputData.contentMarkdown,
-          description: inputData.description,
-          doctorId: inputData.doctorId,
-        });
+        if (inputData.action === 'CREATE') {
+          await db.Markdown.create({
+            contentHTML: inputData.contentHTML,
+            contentMarkdown: inputData.contentMarkdown,
+            description: inputData.description,
+            doctorId: inputData.doctorId,
+          });
+        }
+        if (inputData.action === 'EDIT') {
+          let markdown = await db.Markdown.findOne({
+            where: { doctorId: inputData.doctorId },
+            raw: false
+          })
+
+          if (markdown) {
+            markdown.contentHTML = inputData.contentHTML;
+            markdown.contentMarkdown = inputData.contentMarkdown;
+            markdown.description = inputData.description;
+            await markdown.save()
+          }
+
+        }
+
+
       }
       resolve({
         errCode: 0,
@@ -95,10 +114,10 @@ let getDetailDoctor = (inputId) => {
         });
       }
       else {
-        let dataInfo = await db.User.findOne({
+        let data = await db.User.findOne({
           where: { id: inputId },
           attributes: {
-            exclude: ["password", "image", 'gender', 'roleId'],
+            exclude: ["password", 'roleId'],
           },
           include: [
             { model: db.Markdown, attributes: ['description', 'contentHTML', 'contentMarkdown'] },
@@ -110,11 +129,18 @@ let getDetailDoctor = (inputId) => {
 
           ],
           nest: true,
-          raw: true,
+          raw: false,
         });
+
+        if (data && data.image) {
+          data.image = new Buffer(data.image, 'base64').toString('binary')
+        }
+
+        if (!data) data = {}
+
         resolve({
           errCode: 0,
-          data: dataInfo,
+          data: data,
         });
       }
 
