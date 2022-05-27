@@ -186,7 +186,6 @@ let deleteUser = (userId) => {
         let foundUser = await db.User.findOne({
             where: { id: userId },
         });
-        console.log(foundUser);
         if (!foundUser) {
             resolve({
                 errCode: 2,
