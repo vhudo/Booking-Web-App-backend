@@ -18,6 +18,10 @@ const customizeConfig = {
       "required": true,
       "rejectUnauthorized": false
     }
+  },
+  "timezone": "-04:00",
+  "query": {
+    "raw": true
   }
 }
 
