@@ -15,12 +15,12 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       date: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
       },
       timeType: {
         type: Sequelize.STRING,
       },
-      doctorid: {
+      doctorId: {
         type: Sequelize.INTEGER,
       },
       createdAt: {
