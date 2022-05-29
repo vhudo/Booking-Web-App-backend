@@ -313,7 +313,7 @@ let getProfileDortorById = (doctorId) => {
         let data = await db.User.findOne({
           where: { id: doctorId },
           attributes: {
-            exclude: ['password', 'roleId', 'email', 'address', 'phonenumber', 'gender']
+            exclude: ['password', 'roleId', 'email', 'address', 'phonenumber']
 
           },
           include: [
