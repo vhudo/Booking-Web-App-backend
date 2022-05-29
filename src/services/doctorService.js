@@ -311,9 +311,10 @@ let getProfileDortorById = (doctorId) => {
         });
       } else {
         let data = await db.User.findOne({
-          where: { doctorId: doctorId },
+          where: { id: doctorId },
           attributes: {
-            exclude: ['password', 'roleId']
+            exclude: ['password', 'roleId', 'email', 'address', 'phonenumber', 'gender']
+
           },
           include: [
             { model: db.Markdown, attributes: ['description', 'contentHTML', 'contentMarkdown'] },
