@@ -188,7 +188,7 @@ let getDetailDoctor = (inputId) => {
 
 let bulkCreateSchedule = (data) => {
   return new Promise(async (resolve, reject) => {
-    console.log(data)
+    // console.log(data)
     try {
       if (!data.arrSchedule || !data.doctorId || !data.FormatedDate) {
         resolve({
@@ -280,7 +280,19 @@ let getScheduleByDate = (doctorId, date) => {
         let dataSchedule = await db.Schedule.findAll({
           where: { doctorId: doctorId, date: date },
           include: [
-            { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] }
+            { model: db.Allcode, as: 'timeTypeData', attributes: ['valueEn', 'valueVi'] },
+
+            {
+              model: db.User, as: 'doctorData', attributes: ['firstName', 'lastName'],
+              include: [
+                {
+                  model: db.Doctor_Info,
+                  attributes: ['addressClinic', 'nameClinic'],
+                },
+              ]
+            },
+
+
           ],
           raw: false,
           nest: true

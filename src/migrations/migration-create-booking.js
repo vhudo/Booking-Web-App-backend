@@ -8,19 +8,25 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      statusID: {
+      statusId: {
         type: Sequelize.STRING,
       },
-      dotorID: {
+      doctorId: {
         type: Sequelize.INTEGER,
       },
-      patientID: {
+      patientId: {
         type: Sequelize.INTEGER,
       },
       date: {
         type: Sequelize.STRING,
       },
       timeType: {
+        type: Sequelize.STRING,
+      },
+      tokenBooking: {
+        type: Sequelize.STRING,
+      },
+      reason: {
         type: Sequelize.STRING,
       },
       createdAt: {
