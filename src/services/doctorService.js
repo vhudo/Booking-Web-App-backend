@@ -59,23 +59,35 @@ let getAllDoctors = () => {
   });
 };
 
+let checkRequiredFields = (data) => {
+  let arrFields = ['doctorId', 'contentHTML', 'contentMarkdown', 'action',
+    'selectedState', 'selectedPayment', 'addressClinic', 'nameClinic',
+    'specialtyId']
+
+  let isValid = true
+  let element = ''
+  for (let i = 0; i < arrFields.length; i++) {
+    if (!data[arrFields[i]]) {
+      isValid = false
+      element = arrFields[i]
+      break
+    }
+  }
+  return {
+    isValid: isValid,
+    element: element
+  }
+}
+
 let saveInfoDoctor = (inputData) => {
   return new Promise(async (resolve, reject) => {
     try {
       // console.log(inputData.doctorId);
-      if (
-        !inputData.doctorId ||
-        !inputData.contentHTML ||
-        !inputData.contentMarkdown ||
-        !inputData.action ||
-        !inputData.selectedState ||
-        !inputData.selectedPayment ||
-        !inputData.addressClinic ||
-        !inputData.nameClinic
-      ) {
+      let checkObj = checkRequiredFields(inputData)
+      if (checkObj.isValid === false) {
         resolve({
           errCode: 1,
-          errMessage: "Missing parameters",
+          errMessage: `Missing parameters: ${checkObj.element}`,
         });
       } else {
         if (inputData.action === 'CREATE') {
@@ -111,6 +123,8 @@ let saveInfoDoctor = (inputData) => {
         doctorInfo.note = inputData.note;
         doctorInfo.addressClinic = inputData.addressClinic;
         doctorInfo.nameClinic = inputData.nameClinic;
+        doctorInfo.specialtyId = inputData.specialtyId;
+        doctorInfo.clinicId = inputData.clinicId;
         await doctorInfo.save()
       } else {
         await db.Doctor_Info.create({
@@ -120,6 +134,8 @@ let saveInfoDoctor = (inputData) => {
           note: inputData.note,
           addressClinic: inputData.addressClinic,
           nameClinic: inputData.nameClinic,
+          specialtyId: inputData.specialtyId,
+          clinicId: inputData.clinicId,
         });
       }
       resolve({

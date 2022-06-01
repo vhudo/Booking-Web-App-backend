@@ -78,7 +78,7 @@ let postVerifyBookAppointment = (data) => {
                 let appoiment = await db.Booking.findOne({
                     where: {
                         doctorId: data.doctorId,
-                        tokenBooking: data.token,
+                        tokenBooking: data.tokenBooking,
                         statusId: 'S1'
                     },
                     raw: false,
