@@ -11,7 +11,7 @@ module.exports = {
   down: (queryInterface, Sequelize) => {
     return Promise.all([
       queryInterface.changeColumn('Users', 'image', {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: true,
       })
     ])

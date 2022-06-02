@@ -61,8 +61,7 @@ let getAllDoctors = () => {
 
 let checkRequiredFields = (data) => {
   let arrFields = ['doctorId', 'contentHTML', 'contentMarkdown', 'action',
-    'selectedState', 'selectedPayment', 'addressClinic', 'nameClinic',
-    'specialtyId']
+    'selectedState', 'selectedPayment', 'addressClinic', 'nameClinic',]
 
   let isValid = true
   let element = ''
@@ -123,8 +122,8 @@ let saveInfoDoctor = (inputData) => {
         doctorInfo.note = inputData.note;
         doctorInfo.addressClinic = inputData.addressClinic;
         doctorInfo.nameClinic = inputData.nameClinic;
-        doctorInfo.specialtyId = inputData.specialtyId;
-        doctorInfo.clinicId = inputData.clinicId;
+        doctorInfo.specialtyId = inputData.selectedSpecialty;
+        doctorInfo.clinicId = inputData.selectedClinic;
         await doctorInfo.save()
       } else {
         await db.Doctor_Info.create({
@@ -134,8 +133,8 @@ let saveInfoDoctor = (inputData) => {
           note: inputData.note,
           addressClinic: inputData.addressClinic,
           nameClinic: inputData.nameClinic,
-          specialtyId: inputData.specialtyId,
-          clinicId: inputData.clinicId,
+          specialtyId: inputData.selectedSpecialty,
+          clinicId: inputData.selectedClinic,
         });
       }
       resolve({
@@ -172,7 +171,7 @@ let getDetailDoctor = (inputId) => {
             },
             {
               model: db.Doctor_Info,
-              attributes: ['nameClinic', 'addressClinic', 'note', 'paymentId', 'stateId'],
+              attributes: ['nameClinic', 'addressClinic', 'note', 'paymentId', 'stateId', 'specialtyId', 'clinicId'],
               include: [
                 { model: db.Allcode, as: 'paymentData', attributes: ['valueEn', 'valueVi'] },
               ]
