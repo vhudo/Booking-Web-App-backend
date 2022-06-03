@@ -9,7 +9,7 @@ let handleUserLogin = (email, password) => {
             let isExist = await checkUserEmail(email);
             if (isExist) {
                 let user = await db.User.findOne({
-                    attributes: ["email", "roleId", "password", "firstName", "lastName"],
+                    attributes: ["id", "email", "roleId", "password", "firstName", "lastName"],
                     where: {
                         email: email,
                     },
@@ -139,7 +139,7 @@ let createNewUser = (data) => {
 let updateUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.id || !data.roleId || !data.positionId || !data.gender) {
+            if (!data.id || !data.roleId || !data.gender) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing required parameters",
@@ -152,11 +152,11 @@ let updateUser = (data) => {
             if (user) {
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
-                user.address = data.address;
+                user.address = data.address ? data.address : '';
                 user.roleId = data.roleId;
                 user.positionId = data.positionId;
                 user.gender = data.gender;
-                user.phonenumber = data.phonenumber;
+                user.phonenumber = data.phonenumber ? data.phonenumber : '';
                 if (data.avatar) {
                     user.image = data.avatar;
                 }

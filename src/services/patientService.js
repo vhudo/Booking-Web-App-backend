@@ -7,35 +7,41 @@ import { v4 as uuidv4 } from 'uuid'
 let postBookAppointment = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!data.email || !data.doctorId || !data.timeType || !data.date
-                || !data.name) {
+            console.log(data)
+            if (!data.email || !data.doctorId
+                || !data.timeType || !data.date
+                || !data.name || !data.selectedGender) {
                 resolve({
                     errCode: 1,
                     errMessage: "Missing required parameters"
                 });
             } else {
                 let token = uuidv4()
-                await emailService.sendSimpleEmail({
-                    receiverEmail: data.email,
-                    patientName: data.name,
-                    time: data.timeString,
-                    doctorName: data.doctorName,
-                    language: data.language,
-                    nameClinic: data.nameClinic,
-                    addressClinic: data.addressClinic,
-                    redirectLink: buildURLEmail(data.doctorId, token),
-                })
+                // await emailService.sendSimpleEmail({
+                //     receiverEmail: data.email,
+                //     patientFirstName: data.firstName,
+                //     patientLastName: data.lastName,
+                //     time: data.timeString,
+                //     doctorName: data.doctorName,
+                //     language: data.language,
+                //     nameClinic: data.nameClinic,
+                //     addressClinic: data.addressClinic,
+                //     redirectLink: buildURLEmail(data.doctorId, token),
+                // })
                 let user = await db.User.findOrCreate({
                     where: { email: data.email },
                     defaults: {
                         email: data.email,
-                        roleId: 'R3'
+                        roleId: 'R3',
+                        gender: data.selectedGender,
+                        address: data.address,
+                        firstName: data.name
                     }
                 })
 
                 if (user && user[0]) {
                     await db.Booking.findOrCreate({
-                        where: { patientId: user[0].id, timeType: data.timeType },
+                        where: { patientId: user[0].id, timeType: data.timeType, date: data.date },
                         defaults: {
                             statusId: 'S1',
                             doctorId: data.doctorId,
