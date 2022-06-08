@@ -12,7 +12,7 @@ let getTopDoctorHome = (limitinput) => {
         limit: limitinput,
         where: { roleId: "R2" },
         order: [["createdAt", "DESC"]],
-        attributes: ['firstName', 'lastName', "image"],
+        attributes: ['firstName', 'lastName', "image", "id"],
         include: [
           {
             model: db.Doctor_Info,
@@ -54,7 +54,7 @@ let getAllDoctors = () => {
       let doctors = await db.User.findAll({
         where: { roleId: "R2" },
         attributes: {
-          exclude: ["password", "image"],
+          exclude: ["password"],
         },
       });
       resolve({
